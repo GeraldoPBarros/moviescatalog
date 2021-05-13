@@ -1,18 +1,25 @@
+import { useState, useEffect } from "react";
+import { api } from "../services/api";
 import { Button } from "../components/Button";
 
 import "../styles/content.scss";
 interface GenreResponseProps {
-  genres: {
-    id: number;
-    name: "action" | "comedy" | "documentary" | "drama" | "horror" | "family";
-    title: string;
-  }[];
+  id: number;
+  name: "action" | "comedy" | "documentary" | "drama" | "horror" | "family";
+  title: string;
 }
 
 export function Content(props: any) {
-  const { genres }: GenreResponseProps = props;
   const { handleClickButton } = props;
   const { selectedGenreId } = props;
+
+  const [genres, setGenres] = useState<GenreResponseProps[]>([]);
+
+  useEffect(() => {
+    api.get<GenreResponseProps[]>("genres").then((response) => {
+      setGenres(response.data);
+    });
+  }, []);
 
   return (
     <nav className="sidebar">
