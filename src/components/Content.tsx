@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { MovieCard } from "../components/MovieCard";
 import { api } from "../services/api";
 
@@ -14,10 +14,21 @@ interface MovieProps {
   Runtime: string;
 }
 
-export function Content(props: any) {
-  const { selectedGenre } = props;
-  const { selectedGenreId } = props;
+interface SelectedGenre {
+  id: number;
+  name: "action" | "comedy" | "documentary" | "drama" | "horror" | "family";
+  title: string;
+}
 
+interface SelectedGenreProps {
+  selectedGenre: SelectedGenre;
+  selectedGenreId: number;
+}
+
+export function Content({
+  selectedGenre,
+  selectedGenreId,
+}: SelectedGenreProps) {
   const [movies, setMovies] = useState<MovieProps[]>([]);
 
   useEffect(() => {
